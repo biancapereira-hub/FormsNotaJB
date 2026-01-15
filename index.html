@@ -2,213 +2,230 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Ordem de Serviço</title>
+<title>Talão Ordem de Serviço</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f0f0f0;
+@page {
+  size: A5;
+  margin: 0;
 }
 
-#talao {
+body {
+  background: #ccc;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#nota {
   width: 148mm;
   height: 210mm;
   background: #fff;
-  padding: 10mm;
   margin: auto;
-  color: #000;
+  padding: 8mm;
   box-sizing: border-box;
+  border: 1px solid #000;
 }
 
-.topo {
+.header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center;
+  border-bottom: 1px solid #000;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
 }
 
-.logo {
-  width: 80px;
+.header img {
+  height: 40px;
 }
 
-h2 {
-  margin: 0;
-  font-size: 18px;
+.header .titulo {
+  text-align: right;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .linha {
   display: flex;
-  gap: 10px;
-  margin-bottom: 5px;
+  font-size: 11px;
+  margin-bottom: 3px;
 }
 
-.linha label {
-  width: 100px;
-  font-weight: bold;
-  font-size: 12px;
+.linha span {
+  min-width: 70px;
 }
 
 input {
   border: none;
   border-bottom: 1px solid #000;
+  font-size: 11px;
   width: 100%;
-  font-size: 12px;
 }
 
-table {
+.tabela {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 12px;
+  font-size: 11px;
+  margin-top: 4px;
 }
 
-table th, table td {
+.tabela th,
+.tabela td {
   border: 1px solid #000;
-  padding: 4px;
+  padding: 3px;
   text-align: center;
 }
 
-.total-geral {
-  margin-top: 10px;
+.tabela input {
+  border: none;
+  width: 100%;
+  text-align: center;
+}
+
+.total-box {
   display: flex;
   justify-content: flex-end;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 .rodape {
-  margin-top: 15px;
-  font-size: 11px;
+  font-size: 10px;
   text-align: center;
+  border-top: 1px solid #000;
+  padding-top: 4px;
+  margin-top: 6px;
 }
 
 .assinatura {
-  margin-top: 20px;
+  margin-top: 15px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.assinatura div {
   border-top: 1px solid #000;
   width: 60%;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
 }
 </style>
 </head>
 
-#corpo do formulario com calculo
 <body>
 
-<div id="talao">
+<div id="nota">
 
-  <div class="topo">
-    <img src="logo-jonas-bikes.png" class="logo">
-    <h2>ORDEM DE SERVIÇO</h2>
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <img src="logo-jonas-bikes.png">
+    <div class="titulo">
+      TALÃO DE ORDEM DE SERVIÇO<br>
+      DOCUMENTO A5
+    </div>
+  </div>
+
+  <!-- DADOS -->
+  <div class="linha">
+    <span>Data:</span><input style="width:60px">
+    <span style="margin-left:10px">Cliente:</span><input>
   </div>
 
   <div class="linha">
-    <label>Data:</label>
-    <input type="text">
+    <span>Endereço:</span><input>
   </div>
 
   <div class="linha">
-    <label>Cliente:</label>
-    <input type="text">
+    <span>CPF/CNPJ:</span><input style="width:120px">
+    <span style="margin-left:10px">Fone:</span><input>
   </div>
 
-  <div class="linha">
-    <label>Endereço:</label>
-    <input type="text">
-  </div>
-
-  <div class="linha">
-    <label>CPF/CNPJ:</label>
-    <input type="text">
-  </div>
-
-  <div class="linha">
-    <label>Fone:</label>
-    <input type="text">
-  </div>
-
-  <table>
+  <!-- TABELA -->
+  <table class="tabela">
     <thead>
       <tr>
-        <th>QTD</th>
-        <th>DESCRIÇÃO</th>
-        <th>PREÇO UNIT</th>
-        <th>TOTAL</th>
+        <th style="width:10%">QTD</th>
+        <th style="width:50%">DESCRIÇÃO</th>
+        <th style="width:20%">PREÇO UNIT</th>
+        <th style="width:20%">TOTAL</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><input type="number" class="qtd"></td>
+        <td><input class="qtd"></td>
         <td><input></td>
-        <td><input type="number" class="preco"></td>
-        <td><input class="total-linha" readonly></td>
+        <td><input class="preco"></td>
+        <td><input class="linhaTotal" readonly></td>
       </tr>
       <tr>
-        <td><input type="number" class="qtd"></td>
+        <td><input class="qtd"></td>
         <td><input></td>
-        <td><input type="number" class="preco"></td>
-        <td><input class="total-linha" readonly></td>
+        <td><input class="preco"></td>
+        <td><input class="linhaTotal" readonly></td>
       </tr>
       <tr>
-        <td><input type="number" class="qtd"></td>
+        <td><input class="qtd"></td>
         <td><input></td>
-        <td><input type="number" class="preco"></td>
-        <td><input class="total-linha" readonly></td>
+        <td><input class="preco"></td>
+        <td><input class="linhaTotal" readonly></td>
+      </tr>
+      <tr>
+        <td><input class="qtd"></td>
+        <td><input></td>
+        <td><input class="preco"></td>
+        <td><input class="linhaTotal" readonly></td>
       </tr>
     </tbody>
   </table>
 
-  <div class="total-geral">
-    <strong>TOTAL: R$ <span id="totalGeral">0.00</span></strong>
+  <!-- TOTAL -->
+  <div class="total-box">
+    <strong>TOTAL: R$ <span id="totalGeral">0,00</span></strong>
   </div>
 
+  <!-- RODAPÉ -->
   <div class="rodape">
+    RECIBO DE VENDA<br>
     (17) 99755-2141 · Av. Arapuã, 2815 – Jardim Santo Expedito<br>
     @jonas_bikes_jales
   </div>
 
   <div class="assinatura">
+    <div></div>
     Assinatura da Loja
   </div>
+
 </div>
 
-<button onclick="gerarPDF()" style="display:block;margin:20px auto;">
+<button onclick="gerarPDF()" style="display:block;margin:15px auto;">
   Gerar PDF
 </button>
 
 <script>
 function calcular() {
-  let totalGeral = 0;
+  let total = 0;
 
-  document.querySelectorAll("tbody tr").forEach(linha => {
-    const qtd = linha.querySelector(".qtd").value || 0;
-    const preco = linha.querySelector(".preco").value || 0;
-    const totalLinha = qtd * preco;
+  document.querySelectorAll("tbody tr").forEach(tr => {
+    const qtd = parseFloat(tr.querySelector(".qtd").value) || 0;
+    const preco = parseFloat(tr.querySelector(".preco").value) || 0;
+    const soma = qtd * preco;
 
-    linha.querySelector(".total-linha").value = totalLinha.toFixed(2);
-    totalGeral += totalLinha;
+    tr.querySelector(".linhaTotal").value = soma.toFixed(2);
+    total += soma;
   });
 
-  document.getElementById("totalGeral").innerText = totalGeral.toFixed(2);
+  document.getElementById("totalGeral").innerText = total.toFixed(2);
 }
 
 document.addEventListener("input", calcular);
 
 function gerarPDF() {
-  const elemento = document.getElementById("talao");
-
-  html2pdf()
-    .set({
-      margin: 0,
-      filename: 'ordem-de-servico-jonas-bikes.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
-    })
-    .from(elemento)
-    .save();
+  html2pdf().set({
+    margin: 0,
+    filename: 'talão-ordem-servico-jonas-bikes.pdf',
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
+  }).from(document.getElementById("nota")).save();
 }
 </script>
 
