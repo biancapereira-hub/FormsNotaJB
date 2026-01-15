@@ -22,9 +22,20 @@ body {
   box-sizing: border-box;
 }
 
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.logo {
+  width: 80px;
+}
+
 h2 {
-  text-align: center;
-  margin: 0 0 10px;
+  margin: 0;
+  font-size: 18px;
 }
 
 .linha {
@@ -36,6 +47,7 @@ h2 {
 .linha label {
   width: 100px;
   font-weight: bold;
+  font-size: 12px;
 }
 
 input {
@@ -58,6 +70,13 @@ table th, table td {
   text-align: center;
 }
 
+.total-geral {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 14px;
+}
+
 .rodape {
   margin-top: 15px;
   font-size: 11px;
@@ -75,10 +94,15 @@ table th, table td {
 </style>
 </head>
 
+#corpo do formulario com calculo
 <body>
 
 <div id="talao">
-  <h2>ORDEM DE SERVIÇO</h2>
+
+  <div class="topo">
+    <img src="logo-jonas-bikes.png" class="logo">
+    <h2>ORDEM DE SERVIÇO</h2>
+  </div>
 
   <div class="linha">
     <label>Data:</label>
@@ -116,23 +140,28 @@ table th, table td {
     </thead>
     <tbody>
       <tr>
+        <td><input type="number" class="qtd"></td>
         <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
+        <td><input type="number" class="preco"></td>
+        <td><input class="total-linha" readonly></td>
       </tr>
       <tr>
+        <td><input type="number" class="qtd"></td>
         <td><input></td>
+        <td><input type="number" class="preco"></td>
+        <td><input class="total-linha" readonly></td>
+      </tr>
+      <tr>
+        <td><input type="number" class="qtd"></td>
         <td><input></td>
-        <td><input></td>
-        <td><input></td>
+        <td><input type="number" class="preco"></td>
+        <td><input class="total-linha" readonly></td>
       </tr>
     </tbody>
   </table>
 
-  <div class="linha" style="margin-top:10px;">
-    <label>TOTAL:</label>
-    <input type="text">
+  <div class="total-geral">
+    <strong>TOTAL: R$ <span id="totalGeral">0.00</span></strong>
   </div>
 
   <div class="rodape">
@@ -150,13 +179,30 @@ table th, table td {
 </button>
 
 <script>
+function calcular() {
+  let totalGeral = 0;
+
+  document.querySelectorAll("tbody tr").forEach(linha => {
+    const qtd = linha.querySelector(".qtd").value || 0;
+    const preco = linha.querySelector(".preco").value || 0;
+    const totalLinha = qtd * preco;
+
+    linha.querySelector(".total-linha").value = totalLinha.toFixed(2);
+    totalGeral += totalLinha;
+  });
+
+  document.getElementById("totalGeral").innerText = totalGeral.toFixed(2);
+}
+
+document.addEventListener("input", calcular);
+
 function gerarPDF() {
   const elemento = document.getElementById("talao");
 
   html2pdf()
     .set({
       margin: 0,
-      filename: 'ordem-de-servico.pdf',
+      filename: 'ordem-de-servico-jonas-bikes.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
