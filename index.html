@@ -12,74 +12,70 @@ body {
   background: #eee;
   padding: 20px;
 }
-label {
-  display: block;
-  margin-top: 10px;
-}
-input {
-  width: 300px;
+table input {
+  width: 100%;
 }
 </style>
 </head>
 
 <body>
 
-<h2>Gerar Recibo</h2>
+<h2>Recibo Jonas Bikes</h2>
 
-<label>Cliente:
-  <input id="cliente">
-</label>
+<label>Cliente: <input id="cliente"></label><br>
+<label>Endereço: <input id="endereco"></label><br>
+<label>CPF/CNPJ: <input id="cpf"></label><br>
+<label>Fone: <input id="fone"></label><br><br>
 
-<label>Endereço:
-  <input id="endereco">
-</label>
+<table border="1" cellpadding="5">
+<thead>
+<tr>
+  <th>Qtd</th>
+  <th>Descrição</th>
+  <th>Preço</th>
+</tr>
+</thead>
+<tbody id="itens">
+<tr>
+  <td><input class="qtd"></td>
+  <td><input class="desc"></td>
+  <td><input class="preco"></td>
+</tr>
+<tr>
+  <td><input class="qtd"></td>
+  <td><input class="desc"></td>
+  <td><input class="preco"></td>
+</tr>
+<tr>
+  <td><input class="qtd"></td>
+  <td><input class="desc"></td>
+  <td><input class="preco"></td>
+</tr>
+</tbody>
+</table>
 
-<label>CPF/CNPJ:
-  <input id="cpf">
-</label>
-
-<label>Fone:
-  <input id="fone">
-</label>
-
-<label>Descrição:
-  <input id="desc">
-</label>
-
-<label>Qtd:
-  <input id="qtd" type="number">
-</label>
-
-<label>Preço:
-  <input id="preco" type="number">
-</label>
-
-<br><br>
+<br>
 <button onclick="gerarPDF()">Gerar PDF</button>
 
 <script src="recibo.js"></script>
 </body>
 </html>
-
 <script>
 function gerarPDF() {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF('p', 'mm', 'a4');
 
-  // Dados
   const cliente = document.getElementById('cliente').value;
   const endereco = document.getElementById('endereco').value;
   const cpf = document.getElementById('cpf').value;
   const fone = document.getElementById('fone').value;
-  const desc = document.getElementById('desc').value;
-  const qtd = Number(document.getElementById('qtd').value || 0);
-  const preco = Number(document.getElementById('preco').value || 0);
-  const total = qtd * preco;
+
+  const linhas = document.querySelectorAll('#itens tr');
 
   let y = 20;
 
   // ===== CABEÇALHO =====
-  pdf.setFontSize(22);
+  pdf.setFontSize(20);
   pdf.text('JONAS BIKES', 20, y);
 
   pdf.setFontSize(9);
@@ -97,13 +93,13 @@ function gerarPDF() {
 
   y += 10;
 
-  // ===== DADOS DO CLIENTE =====
+  // ===== DADOS =====
   pdf.setFontSize(10);
   pdf.text(`Cliente: ${cliente}`, 20, y);
   y += 6;
   pdf.text(`Endereço: ${endereco}`, 20, y);
   y += 6;
-  pdf.text(`CPF/CNPJ: ${cpf}    Fone: ${fone}`, 20, y);
+  pdf.text(`CPF/CNPJ: ${cpf}     Fone: ${fone}`, 20, y);
 
   y += 10;
 
@@ -113,24 +109,39 @@ function gerarPDF() {
   pdf.setTextColor(255);
   pdf.text('QTD', 22, y + 6);
   pdf.text('DESCRIÇÃO', 45, y + 6);
-  pdf.text('PREÇO', 140, y + 6);
-  pdf.text('TOTAL', 165, y + 6);
-
+  pdf.text('PREÇO', 155, y + 6);
+  pdf.text('TOTAL', 175, y + 6);
   pdf.setTextColor(0);
+
   y += 8;
 
-  // ===== TABELA (LINHA) =====
-  pdf.rect(20, y, 170, 10);
-  pdf.text(String(qtd), 22, y + 7);
-  pdf.text(desc, 45, y + 7);
-  pdf.text(preco.toFixed(2), 140, y + 7);
-  pdf.text(total.toFixed(2), 165, y + 7);
+  let totalGeral = 0;
 
-  y += 15;
+  // ===== LINHAS =====
+  linhas.forEach(linha => {
+    const qtd = Number(linha.querySelector('.qtd').value || 0);
+    const desc = linha.querySelector('.desc').value || '';
+    const preco = Number(linha.querySelector('.preco').value || 0);
+    const total = qtd * preco;
+
+    const textoDesc = pdf.splitTextToSize(desc, 95);
+    const altura = textoDesc.length * 5;
+
+    pdf.rect(20, y, 170, altura);
+    pdf.text(String(qtd), 22, y + 5);
+    pdf.text(textoDesc, 45, y + 5);
+    pdf.text(preco.toFixed(2), 155, y + 5);
+    pdf.text(total.toFixed(2), 175, y + 5);
+
+    y += altura;
+    totalGeral += total;
+  });
+
+  y += 8;
 
   // ===== TOTAL =====
   pdf.setFontSize(12);
-  pdf.text(`TOTAL: R$ ${total.toFixed(2)}`, 150, y);
+  pdf.text(`TOTAL: R$ ${totalGeral.toFixed(2)}`, 150, y);
 
   // ===== RODAPÉ =====
   y += 10;
@@ -139,11 +150,7 @@ function gerarPDF() {
   pdf.setFontSize(9);
   pdf.text('RECIBO DE VENDA · Jonas Bikes', 105, y, { align: 'center' });
 
-  // ===== NOME DO ARQUIVO =====
   const hoje = new Date().toISOString().slice(0,10);
-  const nomeArquivo = `recibo-${cliente || 'cliente'}-${hoje}.pdf`
-    .replace(/\s+/g, '_');
-
-  pdf.save(nomeArquivo);
+  pdf.save(`recibo-${cliente || 'cliente'}-${hoje}.pdf`);
 }
 </script>
