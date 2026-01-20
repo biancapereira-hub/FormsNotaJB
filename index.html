@@ -134,7 +134,7 @@ td input {
 /* RODAPE */
 .rodape {
   border-top: 1px solid #000;
-  margin-top: 8mm;
+  margin-top: 10mm;     /* 🔥 mais respiro */
   padding-top: 3mm;
   font-size: 11px;
   text-align: center;
@@ -283,14 +283,13 @@ function gerarPDF() {
   const elemento = document.getElementById("nota");
 
   html2pdf(elemento, {
-    margin: 0,
     filename: nome + ".pdf",
+    margin: [5, 5, 10, 5],   // 🔥 margem inferior MAIOR
     image: { type: "jpeg", quality: 1 },
     html2canvas: {
-      scale: 2.5,            /* 🔥 antes 3 */
+      scale: 2.3,
       scrollX: 0,
-      scrollY: 0,
-      windowWidth: 148 * 3.78
+      scrollY: 0
     },
     jsPDF: {
       unit: "mm",
@@ -299,6 +298,7 @@ function gerarPDF() {
     }
   });
 }
+
 </script>
 
 </body>
