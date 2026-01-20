@@ -2,145 +2,138 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Recibo de Venda – Jonas Bikes</title>
+<title>Talão Ordem de Serviço</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 @page {
   size: A5;
-  margin: 0;
+  margin: 5mm;
 }
 
 body {
-  body {
-  margin: 0;
-  padding: 0;
   background: #ccc;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Helvetica, sans-serif;
 }
-
 
 #nota {
   width: 148mm;
+  min-height: 210mm;
   background: #fff;
-  padding: 8mm;
+  margin: auto;
+  padding: 5mm;
   box-sizing: border-box;
   border: 1px solid #000;
-
-  /* 🔥 AJUSTE HORIZONTAL */
-  margin-left: 4mm;
 }
 
-
-/* HEADER */
+/* ================= CABEÇALHO ================= */
 .header {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   border-bottom: 1px solid #000;
-  padding-bottom: 2mm;
-  margin-bottom: 3mm;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .header img {
-  height: 26mm;
+  height: 45px;
 }
 
-.header-info {
-  font-size: 10px;
-  font-weight: bold;
+.header .titulo {
   text-align: right;
-  line-height: 1.2;
-  align-self: end;
-}
-
-/* TITULO */
-.titulo {
-  text-align: center;
+  font-size: 11px;
   font-weight: bold;
-  font-size: 14px;
-  letter-spacing: 2px;
-  margin: 3mm 0;
 }
 
-/* DADOS */
+/* ================= LINHAS DE DADOS ================= */
 .linha {
   display: flex;
   align-items: flex-end;
   font-size: 11px;
-  font-weight: bold;
-  margin-bottom: 2mm;
-}
-
-td {
-  border: 1px solid #000;
-  padding: 0;
-  height: 5.5mm;   /* 🔥 antes era 6mm */
-}
-
-td input {
-  height: 100%;
-  line-height: 6mm;
+  margin-bottom: 4px;
 }
 
 .linha span {
-  margin-right: 5px;
   white-space: nowrap;
+  margin-right: 4px;
 }
 
-.linha input {
-  flex: 1;
+input {
   border: none;
   border-bottom: 1px solid #000;
+  font-size: 11px;
+  width: 100%;
   outline: none;
-  font-size: 12px;
 }
 
-/* TABELA */
-table {
+/* ================= TABELA ================= */
+.tabela {
   width: 100%;
   border-collapse: collapse;
+  border: 1px solid #000;
   font-size: 11px;
+  margin-top: 6mm;
 }
 
-th {
-  background: #000;
-  color: #fff;
+.tabela th {
   border: 1px solid #000;
   padding: 2mm;
+  background: #000;
+  color: #fff;
+  font-weight: bold;
 }
 
-td {
+.tabela td {
   border: 1px solid #000;
-  padding: 0;
-  height: 7mm;
+  padding: 1mm;
+  vertical-align: top;
 }
 
-td input {
+/* INPUTS DA TABELA */
+.tabela input {
   width: 100%;
-  height: 100%;
   border: none;
   outline: none;
-  text-align: center;
   font-size: 11px;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-/* TOTAL */
-.total {
+/* 🔥 DESCRIÇÃO — PARTE IMPORTANTE */
+.tabela td.descricao textarea {
+  width: 100%;
+  min-height: 18mm;
+  border: none;
+  resize: none;
+  outline: none;
+  font-size: 11px;
+  font-family: Helvetica, sans-serif;
+  line-height: 1.2;
+  box-sizing: border-box;
+
+  /* ESSENCIAL PARA NÃO SUMIR NO PDF */
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ================= TOTAL ================= */
+.total-box {
   display: flex;
   justify-content: flex-end;
-  font-size: 13px;
-  font-weight: bold;
-  margin-top: 4mm;
+  font-size: 12px;
+  margin-top: 6px;
 }
 
-/* RODAPE */
+/* ================= RODAPÉ ================= */
 .rodape {
-  border-top: 1px solid #000;
-  margin-top: 10mm;     /* 🔥 mais respiro */
-  padding-top: 3mm;
-  font-size: 11px;
+  font-size: 10px;
   text-align: center;
+  border-top: 1px solid #000;
+  padding-top: 4px;
+  margin-top: 8px;
 }
 </style>
 </head>
@@ -149,44 +142,38 @@ td input {
 
 <div id="nota">
 
-  <!-- HEADER -->
+  <!-- CABEÇALHO -->
   <div class="header">
-    <img src="logo-jonas-bikes.png" alt="Jonas Bikes">
-    <div class="header-info">
+    <img src="logo-jonas-bikes.png">
+    <div class="titulo">
       (17) 99755-2141<br>
       Av. Arapuã, 2815 – Jardim Santo Expedito<br>
       @jonas_bikes_jales
     </div>
   </div>
 
-  <!-- TITULO -->
-  <div class="titulo">RECIBO DE VENDA</div>
+  <h3 style="text-align:center; margin:6px 0;">RECIBO DE VENDA</h3>
 
   <!-- DADOS -->
   <div class="linha">
-    <span>Cliente:</span>
-    <input id="cliente">
+    <span>Cliente:</span><input id="cliente">
   </div>
 
   <div class="linha">
-    <span>Endereço:</span>
-    <input>
+    <span>Endereço:</span><input>
   </div>
 
   <div class="linha">
-    <span>CPF/CNPJ:</span>
-    <input style="max-width:120px">
-    <span style="margin-left:10px">Fone:</span>
-    <input>
+    <span>CPF/CNPJ:</span><input style="width:120px">
+    <span style="margin-left:10px">Fone:</span><input>
   </div>
 
   <div class="linha">
-    <span>Data:</span>
-    <input style="max-width:80px">
+    <span>Data:</span><input style="width:80px">
   </div>
 
   <!-- TABELA -->
-  <table>
+  <table class="tabela">
     <thead>
       <tr>
         <th style="width:10%">QTD</th>
@@ -196,40 +183,21 @@ td input {
       </tr>
     </thead>
     <tbody>
-      <!-- 6 linhas -->
       <tr>
         <td><input class="qtd"></td>
-        <td><input></td>
+        <td class="descricao"><textarea></textarea></td>
         <td><input class="preco"></td>
         <td><input class="linhaTotal" readonly></td>
       </tr>
       <tr>
         <td><input class="qtd"></td>
-        <td><input></td>
+        <td class="descricao"><textarea></textarea></td>
         <td><input class="preco"></td>
         <td><input class="linhaTotal" readonly></td>
       </tr>
       <tr>
         <td><input class="qtd"></td>
-        <td><input></td>
-        <td><input class="preco"></td>
-        <td><input class="linhaTotal" readonly></td>
-      </tr>
-      <tr>
-        <td><input class="qtd"></td>
-        <td><input></td>
-        <td><input class="preco"></td>
-        <td><input class="linhaTotal" readonly></td>
-      </tr>
-      <tr>
-        <td><input class="qtd"></td>
-        <td><input></td>
-        <td><input class="preco"></td>
-        <td><input class="linhaTotal" readonly></td>
-      </tr>
-      <tr>
-        <td><input class="qtd"></td>
-        <td><input></td>
+        <td class="descricao"><textarea></textarea></td>
         <td><input class="preco"></td>
         <td><input class="linhaTotal" readonly></td>
       </tr>
@@ -237,8 +205,8 @@ td input {
   </table>
 
   <!-- TOTAL -->
-  <div class="total">
-    TOTAL: R$ <span id="totalGeral">0,00</span>
+  <div class="total-box">
+    <strong>TOTAL: R$ <span id="totalGeral">0,00</span></strong>
   </div>
 
   <!-- RODAPÉ -->
@@ -248,7 +216,7 @@ td input {
 
 </div>
 
-<button onclick="gerarPDF()" style="display:block;margin:20px auto;padding:8px 16px;font-weight:bold">
+<button onclick="gerarPDF()" style="display:block;margin:15px auto;">
   Gerar PDF
 </button>
 
@@ -257,20 +225,12 @@ function calcular() {
   let total = 0;
 
   document.querySelectorAll("tbody tr").forEach(tr => {
-    const qtdInput = tr.querySelector(".qtd");
-    const precoInput = tr.querySelector(".preco");
-    const totalInput = tr.querySelector(".linhaTotal");
+    const qtd = parseFloat(tr.querySelector(".qtd").value) || 0;
+    const preco = parseFloat(tr.querySelector(".preco").value) || 0;
+    const soma = qtd * preco;
 
-    const qtd = parseFloat(qtdInput.value);
-    const preco = parseFloat(precoInput.value);
-
-    if (!isNaN(qtd) && !isNaN(preco)) {
-      const soma = qtd * preco;
-      totalInput.value = soma.toFixed(2);
-      total += soma;
-    } else {
-      totalInput.value = ""; // 🔥 não mostra 0.00
-    }
+    tr.querySelector(".linhaTotal").value = soma.toFixed(2);
+    total += soma;
   });
 
   document.getElementById("totalGeral").innerText = total.toFixed(2);
@@ -281,24 +241,18 @@ document.addEventListener("input", calcular);
 function gerarPDF() {
   const cliente = document.getElementById("cliente").value || "cliente";
   const data = new Date().toISOString().split("T")[0];
-  const nome = `OS-${cliente}-${data}`.replace(/\s+/g, "-");
 
-  const elemento = document.getElementById("nota");
-
-  html2pdf(elemento, {
-    filename: nome + ".pdf",
-    margin: 5, // 🔥 margem padrão, equilibrada
-    image: { type: "jpeg", quality: 1 },
-    html2canvas: {
-      scale: 2.2
-    },
-    jsPDF: {
-      unit: "mm",
-      format: "a5",
-      orientation: "portrait"
-    }
-  });
+  html2pdf().set({
+    margin: 0,
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' },
+    filename: `OS-${cliente.replace(/\s+/g, "_")}-${data}.pdf`
+  }).from(document.getElementById("nota")).save();
 }
+</script>
+
+</body>
+</html>
 
 </script>
 
