@@ -2,254 +2,148 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Talão Ordem de Serviço</title>
+<title>Recibo Jonas Bikes</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-@page {
-  size: A4;
-  margin: 15mm;
-}
-  
 body {
-  background: #ccc;
-  font-family: Helvetica, sans-serif;
-  display: flex;
-  justify-content: center;
+  font-family: Arial, sans-serif;
+  background: #eee;
+  padding: 20px;
 }
-
-
-#nota {
-  padding: 15mm 15mm 10mm 15mm;
+label {
+  display: block;
+  margin-top: 10px;
 }
-
-/* ================= CABEÇALHO ================= */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.header img {
-  height: 45px;
-}
-
-.header .titulo {
-  text-align: right;
-  margin-top: 8 mm;
-  font-size: 11px;
-  font-weight: bold;
-}
-  
-  .logo-texto {
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: -1.5px;
-  line-height: 1;
-
-/* ================= LINHAS DE DADOS ================= */
-.linha {
-  display: flex;
-  align-items: flex-end;
-  font-size: 11px;
-  margin-bottom: 4px;
-}
-
-.linha span {
-  white-space: nowrap;
-  margin-right: 4px;
-}
-
 input {
-  border: none;
-  border-bottom: 1px solid #000;
-  font-size: 11px;
-  width: 100%;
-  outline: none;
-}
-
-/* ================= TABELA ================= */
-.tabela {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-  
-.tabela th {
-  border: 1px solid #000;
-  padding: 2mm;
-  background: #000;
-  color: #fff;
-  font-weight: bold;
-}
-
-.tabela td {
-  border: 1px solid #000;
-  padding: 1mm;
-  vertical-align: top;
-}
-
-/* INPUTS DA TABELA */
-.tabela input {
-  width: 100%;
-  border: none;
-  outline: none;
-  font-size: 11px;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-/* 🔥 DESCRIÇÃO — PARTE IMPORTANTE */
-.tabela td.descricao input {
-  text-align: left;
-  font-size: 10px;
-  padding: 2mm;
-}
-
-  /* ESSENCIAL PARA NÃO SUMIR NO PDF */
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-/* ================= TOTAL ================= */
-.total-box {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 12px;
-  margin-top: 6px;
-}
-
-/* ================= RODAPÉ ================= */
-.rodape {
-  font-size: 10px;
-  text-align: center;
-  border-top: 1px solid #000;
-  padding-top: 4px;
-  margin-top: 8px;
+  width: 300px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="nota">
+<h2>Gerar Recibo</h2>
 
-  <!-- CABEÇALHO -->
-  <div class="header">
-  <div class="logo-texto">JONAS BIKES</div>
-  <div class="titulo">
-    RECIBO DE VENDA
-      (17) 99755-2141<br>
-      Av. Arapuã, 2815 – Jardim Santo Expedito<br>
-      @jonas_bikes_jales
-    </div>
-  </div>
+<label>Cliente:
+  <input id="cliente">
+</label>
 
-  <h3 style="text-align:center; margin:6px 0;">RECIBO DE VENDA</h3>
+<label>Endereço:
+  <input id="endereco">
+</label>
 
-  <!-- DADOS -->
-  <div class="linha">
-    <span>Cliente:</span><input id="cliente">
-  </div>
+<label>CPF/CNPJ:
+  <input id="cpf">
+</label>
 
-  <div class="linha">
-    <span>Endereço:</span><input>
-  </div>
+<label>Fone:
+  <input id="fone">
+</label>
 
-  <div class="linha">
-    <span>CPF/CNPJ:</span><input style="width:120px">
-    <span style="margin-left:10px">Fone:</span><input>
-  </div>
+<label>Descrição:
+  <input id="desc">
+</label>
 
-  <div class="linha">
-    <span>Data:</span><input style="width:80px">
-  </div>
+<label>Qtd:
+  <input id="qtd" type="number">
+</label>
 
-  <!-- TABELA -->
-  <table class="tabela">
-    <thead>
-      <tr>
-        <th style="width:10%">QTD</th>
-        <th style="width:50%">DESCRIÇÃO</th>
-        <th style="width:20%">PREÇO</th>
-        <th style="width:20%">TOTAL</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><input class="qtd"></td>
-       <td class="descricao"><input class="desc"></td>
-        <td><input class="preco"></td>
-        <td><input class="linhaTotal" readonly></td>
-      </tr>
-      <tr>
-        <td><input class="qtd"></td>
-       <td class="descricao"><input class="desc"></td>
-        <td><input class="preco"></td>
-        <td><input class="linhaTotal" readonly></td>
-      </tr>
-      <tr>
-        <td><input class="qtd"></td>
-        <td class="descricao"><input class="desc"></td>
-        <td><input class="preco"></td>
-        <td><input class="linhaTotal" readonly></td>
-      </tr>
-    </tbody>
-  </table>
+<label>Preço:
+  <input id="preco" type="number">
+</label>
 
-  <!-- TOTAL -->
-  <div class="total-box">
-    <strong>TOTAL: R$ <span id="totalGeral">0,00</span></strong>
-  </div>
+<br><br>
+<button onclick="gerarPDF()">Gerar PDF</button>
 
-  <!-- RODAPÉ -->
-  <div class="rodape">
-    RECIBO DE VENDA · Jonas Bikes
-  </div>
-
-</div>
-
-<button onclick="gerarPDF()" style="display:block;margin:15px auto;">
-  Gerar PDF
-</button>
+<script src="recibo.js"></script>
+</body>
+</html>
 
 <script>
-function calcular() {
-  let total = 0;
-
-  document.querySelectorAll("tbody tr").forEach(tr => {
-    const qtd = parseFloat(tr.querySelector(".qtd").value) || 0;
-    const preco = parseFloat(tr.querySelector(".preco").value) || 0;
-    const soma = qtd * preco;
-
-    tr.querySelector(".linhaTotal").value = soma.toFixed(2);
-    total += soma;
-  });
-
-  document.getElementById("totalGeral").innerText = total.toFixed(2);
-}
-
-document.addEventListener("input", calcular);
-
 function gerarPDF() {
-  const cliente = document.getElementById("cliente").value || "cliente";
-  const data = new Date().toISOString().split("T")[0];
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'mm', 'a4');
 
-  html2pdf().set({
-    margin: 0,
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' },
-    filename: `OS-${cliente.replace(/\s+/g, "_")}-${data}.pdf`
-  }).from(document.getElementById("nota")).save();
+  // Dados
+  const cliente = document.getElementById('cliente').value;
+  const endereco = document.getElementById('endereco').value;
+  const cpf = document.getElementById('cpf').value;
+  const fone = document.getElementById('fone').value;
+  const desc = document.getElementById('desc').value;
+  const qtd = Number(document.getElementById('qtd').value || 0);
+  const preco = Number(document.getElementById('preco').value || 0);
+  const total = qtd * preco;
+
+  let y = 20;
+
+  // ===== CABEÇALHO =====
+  pdf.setFontSize(22);
+  pdf.text('JONAS BIKES', 20, y);
+
+  pdf.setFontSize(9);
+  pdf.text('(17) 99755-2141', 140, y);
+  pdf.text('Av. Arapuã, 2815 – Jardim Santo Expedito', 140, y + 4);
+  pdf.text('@jonas_bikes_jales', 140, y + 8);
+
+  y += 15;
+  pdf.line(20, y, 190, y);
+
+  // ===== TÍTULO =====
+  y += 10;
+  pdf.setFontSize(14);
+  pdf.text('RECIBO DE VENDA', 105, y, { align: 'center' });
+
+  y += 10;
+
+  // ===== DADOS DO CLIENTE =====
+  pdf.setFontSize(10);
+  pdf.text(`Cliente: ${cliente}`, 20, y);
+  y += 6;
+  pdf.text(`Endereço: ${endereco}`, 20, y);
+  y += 6;
+  pdf.text(`CPF/CNPJ: ${cpf}    Fone: ${fone}`, 20, y);
+
+  y += 10;
+
+  // ===== TABELA (CABEÇALHO) =====
+  pdf.setFillColor(0);
+  pdf.rect(20, y, 170, 8, 'F');
+  pdf.setTextColor(255);
+  pdf.text('QTD', 22, y + 6);
+  pdf.text('DESCRIÇÃO', 45, y + 6);
+  pdf.text('PREÇO', 140, y + 6);
+  pdf.text('TOTAL', 165, y + 6);
+
+  pdf.setTextColor(0);
+  y += 8;
+
+  // ===== TABELA (LINHA) =====
+  pdf.rect(20, y, 170, 10);
+  pdf.text(String(qtd), 22, y + 7);
+  pdf.text(desc, 45, y + 7);
+  pdf.text(preco.toFixed(2), 140, y + 7);
+  pdf.text(total.toFixed(2), 165, y + 7);
+
+  y += 15;
+
+  // ===== TOTAL =====
+  pdf.setFontSize(12);
+  pdf.text(`TOTAL: R$ ${total.toFixed(2)}`, 150, y);
+
+  // ===== RODAPÉ =====
+  y += 10;
+  pdf.line(20, y, 190, y);
+  y += 5;
+  pdf.setFontSize(9);
+  pdf.text('RECIBO DE VENDA · Jonas Bikes', 105, y, { align: 'center' });
+
+  // ===== NOME DO ARQUIVO =====
+  const hoje = new Date().toISOString().slice(0,10);
+  const nomeArquivo = `recibo-${cliente || 'cliente'}-${hoje}.pdf`
+    .replace(/\s+/g, '_');
+
+  pdf.save(nomeArquivo);
 }
 </script>
-
-</body>
-</html>
-
-</script>
-
-</body>
-</html>
