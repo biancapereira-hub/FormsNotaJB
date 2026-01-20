@@ -1,2 +1,4 @@
-<img src="img/logo-jonas-bikes.png">
+git add j.png
+git commit -m "Adiciona imagem ao projeto"
+git push origin main
 
