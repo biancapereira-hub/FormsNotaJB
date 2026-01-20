@@ -9,23 +9,18 @@
 <style>
 @page {
   size: A5;
-  margin: 5mm;
+  margin: 8mm;
 }
-
+  
 body {
   background: #ccc;
   font-family: Helvetica, sans-serif;
 }
 
 #nota {
-  width: 148mm;
-  min-height: 210mm;
-  background: #fff;
-  margin: auto;
-  padding: 5mm;
-  box-sizing: border-box;
-  border: 1px solid #000;
-}
+  width: 132mm; /* MAIS ESTREITO QUE A5 */
+  min-height: auto;
+
 
 /* ================= CABEÇALHO ================= */
 .header {
@@ -75,6 +70,9 @@ input {
   border: 1px solid #000;
   font-size: 11px;
   margin-top: 6mm;
+  table-layout: fixed;
+}
+
 }
 
 .tabela th {
@@ -102,16 +100,11 @@ input {
 }
 
 /* 🔥 DESCRIÇÃO — PARTE IMPORTANTE */
-.tabela td.descricao textarea {
-  width: 100%;
-  min-height: 18mm;
-  border: none;
-  resize: none;
-  outline: none;
-  font-size: 11px;
-  font-family: Helvetica, sans-serif;
-  line-height: 1.2;
-  box-sizing: border-box;
+.tabela td.descricao input {
+  text-align: left;
+  font-size: 10px;
+  padding: 2mm;
+}
 
   /* ESSENCIAL PARA NÃO SUMIR NO PDF */
   white-space: pre-wrap;
@@ -144,8 +137,9 @@ input {
 
   <!-- CABEÇALHO -->
   <div class="header">
-    <img src="logo-jonas-bikes.png">
-    <div class="titulo">
+  <div class="logo-texto">JONAS BIKES</div>
+  <div class="titulo">
+    RECIBO DE VENDA
       (17) 99755-2141<br>
       Av. Arapuã, 2815 – Jardim Santo Expedito<br>
       @jonas_bikes_jales
@@ -185,19 +179,19 @@ input {
     <tbody>
       <tr>
         <td><input class="qtd"></td>
-        <td class="descricao"><textarea></textarea></td>
+       <td class="descricao"><input class="desc"></td>
         <td><input class="preco"></td>
         <td><input class="linhaTotal" readonly></td>
       </tr>
       <tr>
         <td><input class="qtd"></td>
-        <td class="descricao"><textarea></textarea></td>
+       <td class="descricao"><input class="desc"></td>
         <td><input class="preco"></td>
         <td><input class="linhaTotal" readonly></td>
       </tr>
       <tr>
         <td><input class="qtd"></td>
-        <td class="descricao"><textarea></textarea></td>
+        <td class="descricao"><input class="desc"></td>
         <td><input class="preco"></td>
         <td><input class="linhaTotal" readonly></td>
       </tr>
