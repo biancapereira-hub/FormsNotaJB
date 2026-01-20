@@ -2,193 +2,398 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recibo Jonas Bikes</title>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #eee;
-  padding: 20px;
-}
-table input {
-  width: 100%;
-}
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .container {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 5px;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: inline-block;
+    width: 120px;
+    font-weight: bold;
+  }
+  
+  input[type="text"], input[type="number"] {
+    width: 300px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  th {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .table-input {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    background: transparent;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn:hover {
+    opacity: 0.9;
+  }
+  
+  .buttons-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .header-info {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 </style>
 </head>
-
 <body>
 
-<h2>Recibo Jonas Bikes</h2>
+<div class="container">
+  <h2>Recibo Jonas Bikes</h2>
+  
+  <div class="header-info">
+    <h3>JONAS BIKES</h3>
+    <p>(17) 99755-2141</p>
+    <p>Av. Arapuã, 2815 – Jardim Santo Expedito</p>
+    <p>@jonas_bikes_jales</p>
+  </div>
+  
+  <div class="form-section">
+    <h3>Dados do Cliente</h3>
+    <div class="form-group">
+      <label for="cliente">Cliente:</label>
+      <input type="text" id="cliente" placeholder="Nome do cliente">
+    </div>
+    <div class="form-group">
+      <label for="endereco">Endereço:</label>
+      <input type="text" id="endereco" placeholder="Endereço completo">
+    </div>
+    <div class="form-group">
+      <label for="cpf">CPF/CNPJ:</label>
+      <input type="text" id="cpf" placeholder="CPF ou CNPJ">
+    </div>
+    <div class="form-group">
+      <label for="fone">Fone:</label>
+      <input type="text" id="fone" placeholder="Telefone">
+    </div>
+  </div>
+  
+  <div class="form-section">
+    <h3>Itens da Venda</h3>
+    <table border="1">
+      <thead>
+        <tr>
+          <th width="15%">Qtd</th>
+          <th width="55%">Descrição</th>
+          <th width="15%">Preço</th>
+          <th width="15%">Total</th>
+        </tr>
+      </thead>
+      <tbody id="itens">
+        <tr>
+          <td><input type="number" class="qtd table-input" value="4" min="0"></td>
+          <td><input type="text" class="desc table-input" value="promocionais pequeninhas de criancinha bem montilhão"></td>
+          <td><input type="number" class="preco table-input" value="45.00" step="0.01" min="0"></td>
+          <td class="total-item">180,00</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align: right; font-weight: bold;">TOTAL GERAL:</td>
+          <td id="total-geral" style="font-weight: bold;">R$ 180,00</td>
+        </tr>
+      </tfoot>
+    </table>
+    
+    <div class="buttons-container">
+      <button class="btn btn-primary" onclick="adicionarLinha()">+ Adicionar Item</button>
+      <button class="btn btn-danger" onclick="removerUltimaLinha()">- Remover Item</button>
+    </div>
+  </div>
+  
+  <div class="buttons-container">
+    <button class="btn btn-success" onclick="gerarPDF()">Gerar PDF do Recibo</button>
+  </div>
+</div>
 
-<label>Cliente: <input id="cliente"></label><br>
-<label>Endereço: <input id="endereco"></label><br>
-<label>CPF/CNPJ: <input id="cpf"></label><br>
-<label>Fone: <input id="fone"></label><br><br>
-
-<table border="1" cellpadding="5">
-<thead>
-<tr>
-  <th>Qtd</th>
-  <th>Descrição</th>
-  <th>Preço</th>
-</tr>
-</thead>
-<tbody id="itens">
-<tr>
-  <td><input class="qtd"></td>
-  <td><input class="desc"></td>
-  <td><input class="preco"></td>
-</tr>
-<tr>
-  <td><input class="qtd"></td>
-  <td><input class="desc"></td>
-  <td><input class="preco"></td>
-</tr>
-<tr>
-  <td><input class="qtd"></td>
-  <td><input class="desc"></td>
-  <td><input class="preco"></td>
-</tr>
-</tbody>
-</table>
-
-<br>
-<button onclick="gerarPDF()">Gerar PDF</button>
-
-<script src="recibo.js"></script>
-</body>
-</html>
 <script>
-function gerarPDF() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'mm', 'a4');
+// Variáveis globais
+const { jsPDF } = window.jspdf;
 
-  const cliente = document.getElementById('cliente').value;
-  const endereco = document.getElementById('endereco').value;
-  const cpf = document.getElementById('cpf').value;
-  const fone = document.getElementById('fone').value;
-
+// Função para calcular total por item e geral
+function calcularTotais() {
   const linhas = document.querySelectorAll('#itens tr');
+  let totalGeral = 0;
+  
+  linhas.forEach((linha, index) => {
+    const qtd = parseFloat(linha.querySelector('.qtd').value) || 0;
+    const preco = parseFloat(linha.querySelector('.preco').value) || 0;
+    const total = qtd * preco;
+    
+    // Atualiza o total da linha
+    linha.querySelector('.total-item').textContent = total.toFixed(2).replace('.', ',');
+    
+    totalGeral += total;
+  });
+  
+  // Atualiza total geral
+  document.getElementById('total-geral').textContent = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+  
+  return totalGeral;
+}
 
-  let y = 20;
-
- <script>
+// Função para adicionar nova linha
 function adicionarLinha() {
   const tbody = document.getElementById('itens');
-
-  const tr = document.createElement('tr');
-
-  tr.innerHTML = `
-    <td><input class="qtd"></td>
-    <td><input class="desc"></td>
-    <td><input class="preco"></td>
+  const novaLinha = document.createElement('tr');
+  
+  novaLinha.innerHTML = `
+    <td><input type="number" class="qtd table-input" value="0" min="0"></td>
+    <td><input type="text" class="desc table-input" placeholder="Descrição do produto"></td>
+    <td><input type="number" class="preco table-input" value="0.00" step="0.01" min="0"></td>
+    <td class="total-item">0,00</td>
   `;
-
-  tbody.appendChild(tr);
+  
+  tbody.appendChild(novaLinha);
+  
+  // Adiciona eventos aos novos inputs
+  novaLinha.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calcularTotais);
+  });
+  
+  calcularTotais();
 }
-</script>
 
- // ===== CABEÇALHO =====
+// Função para remover a última linha
+function removerUltimaLinha() {
+  const tbody = document.getElementById('itens');
+  const linhas = tbody.querySelectorAll('tr');
+  
+  if (linhas.length > 1) {
+    tbody.removeChild(linhas[linhas.length - 1]);
+    calcularTotais();
+  } else {
+    alert('É necessário ter pelo menos um item na venda.');
+  }
+}
+
+// Função para gerar PDF
+function gerarPDF() {
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  let y = 20; // Posição vertical inicial
+  
+  // ===== CABEÇALHO =====
   pdf.setFontSize(20);
+  pdf.setFont(undefined, 'bold');
   pdf.text('JONAS BIKES', 20, y);
-
+  
   pdf.setFontSize(9);
+  pdf.setFont(undefined, 'normal');
   pdf.text('(17) 99755-2141', 140, y);
   pdf.text('Av. Arapuã, 2815 – Jardim Santo Expedito', 140, y + 4);
   pdf.text('@jonas_bikes_jales', 140, y + 8);
-
+  
   y += 15;
   pdf.line(20, y, 190, y);
-
+  
   // ===== TÍTULO =====
   y += 10;
   pdf.setFontSize(14);
+  pdf.setFont(undefined, 'bold');
   pdf.text('RECIBO DE VENDA', 105, y, { align: 'center' });
-
+  
   y += 10;
-
-  // ===== DADOS =====
+  
+  // ===== DADOS DO CLIENTE =====
   pdf.setFontSize(10);
+  pdf.setFont(undefined, 'normal');
+  
+  const cliente = document.getElementById('cliente').value || '___________________';
+  const endereco = document.getElementById('endereco').value || '___________________';
+  const cpf = document.getElementById('cpf').value || '___________________';
+  const fone = document.getElementById('fone').value || '___________________';
+  
   pdf.text(`Cliente: ${cliente}`, 20, y);
   y += 6;
   pdf.text(`Endereço: ${endereco}`, 20, y);
   y += 6;
   pdf.text(`CPF/CNPJ: ${cpf}     Fone: ${fone}`, 20, y);
-
+  
   y += 10;
-
-  // ===== TABELA (CABEÇALHO) =====
+  
+  // ===== CABEÇALHO DA TABELA =====
   pdf.setFillColor(0);
   pdf.rect(20, y, 170, 8, 'F');
   pdf.setTextColor(255);
+  pdf.setFont(undefined, 'bold');
   pdf.text('QTD', 22, y + 6);
   pdf.text('DESCRIÇÃO', 45, y + 6);
-  pdf.text('PREÇO', 155, y + 6);
+  pdf.text('PREÇO', 140, y + 6);
   pdf.text('TOTAL', 175, y + 6);
   pdf.setTextColor(0);
-
+  pdf.setFont(undefined, 'normal');
+  
   y += 8;
-
+  
+  // ===== LINHAS DOS ITENS =====
+  const linhas = document.querySelectorAll('#itens tr');
   let totalGeral = 0;
-
- <table border="1" cellpadding="5">
-  <thead>
-    <tr>
-      <th>Qtd</th>
-      <th>Descrição</th>
-      <th>Preço</th>
-    </tr>
-  </thead>
-  <tbody id="itens">
-    <tr>
-      <td><input class="qtd"></td>
-      <td><input class="desc"></td>
-      <td><input class="preco"></td>
-    </tr>
-  </tbody>
-</table>
-
-<br>
-<button type="button" onclick="adicionarLinha()">+ Linha</button>
-<br><br>
-<button onclick="gerarPDF()">Gerar PDF</button>
-
- // ===== LINHAS =====
+  let itensAdicionados = 0;
+  
   linhas.forEach(linha => {
-    const qtd = Number(linha.querySelector('.qtd').value || 0);
+    const qtd = parseFloat(linha.querySelector('.qtd').value) || 0;
     const desc = linha.querySelector('.desc').value || '';
-    const preco = Number(linha.querySelector('.preco').value || 0);
+    const preco = parseFloat(linha.querySelector('.preco').value) || 0;
     const total = qtd * preco;
-
-    const textoDesc = pdf.splitTextToSize(desc, 95);
-    const altura = textoDesc.length * 5;
-
-    pdf.rect(20, y, 170, altura);
-    pdf.text(String(qtd), 22, y + 5);
-    pdf.text(textoDesc, 45, y + 5);
-    pdf.text(preco.toFixed(2), 155, y + 5);
-    pdf.text(total.toFixed(2), 175, y + 5);
-
-    y += altura;
-    totalGeral += total;
+    
+    // Só adiciona no PDF se houver quantidade > 0
+    if (qtd > 0 && desc.trim() !== '') {
+      const textoDesc = pdf.splitTextToSize(desc, 90);
+      const altura = Math.max(8, textoDesc.length * 5);
+      
+      // Desenha a linha
+      pdf.rect(20, y, 170, altura);
+      
+      // Conteúdo da linha
+      pdf.text(qtd.toString(), 22, y + 5);
+      pdf.text(textoDesc, 45, y + 5);
+      pdf.text(`R$ ${preco.toFixed(2).replace('.', ',')}`, 140, y + 5);
+      pdf.text(`R$ ${total.toFixed(2).replace('.', ',')}`, 175, y + 5);
+      
+      y += altura;
+      totalGeral += total;
+      itensAdicionados++;
+    }
   });
-
+  
+  // Se não houver itens, adiciona uma linha vazia
+  if (itensAdicionados === 0) {
+    pdf.rect(20, y, 170, 8);
+    y += 8;
+  }
+  
   y += 8;
-
-  // ===== TOTAL =====
+  
+  // ===== TOTAL GERAL =====
   pdf.setFontSize(12);
-  pdf.text(`TOTAL: R$ ${totalGeral.toFixed(2)}`, 150, y);
-
+  pdf.setFont(undefined, 'bold');
+  pdf.text(`TOTAL: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, 150, y);
+  
   // ===== RODAPÉ =====
-  y += 10;
+  y += 15;
   pdf.line(20, y, 190, y);
   y += 5;
   pdf.setFontSize(9);
-  pdf.text('RECIBO DE VENDA · Jonas Bikes', 105, y, { align: 'center' });
-
-  const hoje = new Date().toISOString().slice(0,10);
-  pdf.save(`recibo-${cliente || 'cliente'}-${hoje}.pdf`);
+  pdf.setFont(undefined, 'normal');
+  pdf.text('RECIBO DE VENDA - Jonas Bikes', 105, y, { align: 'center' });
+  
+  // ===== DATA =====
+  const hoje = new Date();
+  const dataFormatada = hoje.toLocaleDateString('pt-BR');
+  pdf.text(`Data: ${dataFormatada}`, 20, y);
+  
+  // ===== GERAR NOME DO ARQUIVO =====
+  const nomeCliente = document.getElementById('cliente').value || 'cliente';
+  const nomeArquivo = `recibo_${nomeCliente.replace(/\s+/g, '_').toLowerCase()}_${hoje.getTime()}.pdf`;
+  
+  // Salvar PDF
+  pdf.save(nomeArquivo);
 }
+
+// Adiciona eventos aos inputs existentes para calcular totais
+document.addEventListener('DOMContentLoaded', function() {
+  // Adiciona eventos de input para cálculo automático
+  document.querySelectorAll('.qtd, .preco').forEach(input => {
+    input.addEventListener('input', calcularTotais);
+  });
+  
+  // Calcula totais iniciais
+  calcularTotais();
+});
 </script>
+
+</body>
+</html>
