@@ -29,22 +29,25 @@ body {
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid #000;
-  padding-bottom: 2px;
-  margin-bottom: 2px;
+  padding-bottom: 2mm;
+  margin-bottom: 3mm;
 }
 
 .header img {
-  height: 150px;
+  height: 35mm;      /* tamanho realista para A5 */
+  object-fit: contain;
 }
 
 .header .titulo {
   text-align: right;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
+  line-height: 1.2;
 }
+
 
 .linha {
   display: flex;
@@ -134,7 +137,8 @@ input {
   <!-- DADOS -->
   <div class="linha">
     <span>Data:</span><input style="width:60px">
-    <span style="margin-left:10px">Cliente:</span><input>
+    <span>Cliente:</span><input id="cliente">
+
   </div>
 
   <div class="linha">
@@ -222,20 +226,32 @@ function calcular() {
 document.addEventListener("input", calcular);
 
 function gerarPDF() {
-  html2pdf().set({
-  margin: 0,
-  html2canvas: {
-    scale: 2,
-    letterRendering: true
-  },
-  jsPDF: {
-    unit: 'mm',
-    format: 'a5',
-    orientation: 'portrait'
-  }
-}).from(document.getElementById("nota")).save();
+  const clienteInput = document.getElementById("cliente");
+  const cliente = clienteInput.value.trim() || "cliente";
+
+  const data = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+  const nomeArquivo = `OS-${cliente.replace(/\s+/g, "-")}-${data}.pdf`;
+
+  html2pdf()
+    .set({
+      margin: 0,
+      filename: nomeArquivo,
+      html2canvas: {
+        scale: 2,
+        useCORS: true
+      },
+      jsPDF: {
+        unit: "mm",
+        format: "a5",
+        orientation: "portrait"
+      }
+    })
+    .from(document.getElementById("nota"))
+    .save();
 }
 </script>
+
+
 
 </body>
 </html>
