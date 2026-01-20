@@ -31,31 +31,31 @@ body {
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   border-bottom: 1px solid #000;
-  padding-bottom: 3mm;
-  margin-bottom: 4mm;
+  padding-bottom: 2mm;
+  margin-bottom: 3mm;
 }
 
 .header img {
-  height: 35mm;
-  object-fit: contain;
+  height: 28mm; /* menor e mais fiel */
 }
 
 .header-info {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
   text-align: right;
-  line-height: 1.3;
+  line-height: 1.2;
 }
+
 
 /* TITULO */
 .titulo {
   text-align: center;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: 2px;
-  margin-bottom: 4mm;
+  margin: 3mm 0;
 }
 
 /* DADOS */
@@ -241,12 +241,20 @@ function calcular() {
   let total = 0;
 
   document.querySelectorAll("tbody tr").forEach(tr => {
-    const qtd = parseFloat(tr.querySelector(".qtd").value) || 0;
-    const preco = parseFloat(tr.querySelector(".preco").value) || 0;
-    const soma = qtd * preco;
+    const qtdInput = tr.querySelector(".qtd");
+    const precoInput = tr.querySelector(".preco");
+    const totalInput = tr.querySelector(".linhaTotal");
 
-    tr.querySelector(".linhaTotal").value = soma.toFixed(2);
-    total += soma;
+    const qtd = parseFloat(qtdInput.value);
+    const preco = parseFloat(precoInput.value);
+
+    if (!isNaN(qtd) && !isNaN(preco)) {
+      const soma = qtd * preco;
+      totalInput.value = soma.toFixed(2);
+      total += soma;
+    } else {
+      totalInput.value = ""; // 🔥 não mostra 0.00
+    }
   });
 
   document.getElementById("totalGeral").innerText = total.toFixed(2);
