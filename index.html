@@ -23,12 +23,15 @@ body {
 
 #nota {
   width: 148mm;
-  height: 185mm;        /* 🔥 ÁREA SEGURA */
   background: #fff;
-  padding: 6mm;
+  padding: 8mm;
   box-sizing: border-box;
   border: 1px solid #000;
+
+  /* 🔥 AJUSTE HORIZONTAL */
+  margin-left: 4mm;
 }
+
 
 /* HEADER */
 .header {
@@ -284,12 +287,10 @@ function gerarPDF() {
 
   html2pdf(elemento, {
     filename: nome + ".pdf",
-    margin: [5, 5, 10, 5],   // 🔥 margem inferior MAIOR
+    margin: 5, // 🔥 margem padrão, equilibrada
     image: { type: "jpeg", quality: 1 },
     html2canvas: {
-      scale: 2.3,
-      scrollX: 0,
-      scrollY: 0
+      scale: 2.2
     },
     jsPDF: {
       unit: "mm",
