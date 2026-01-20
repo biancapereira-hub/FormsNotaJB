@@ -13,15 +13,19 @@
 }
 
 body {
+  body {
+  margin: 0;
+  padding: 0;
   background: #ccc;
   font-family: Arial, Helvetica, sans-serif;
 }
 
+
 #nota {
+  #nota {
   width: 148mm;
-  min-height: 210mm;
+  height: 210mm;          /* FIXO */
   background: #fff;
-  margin: 10px auto;
   padding: 6mm;
   box-sizing: border-box;
   border: 1px solid #000;
@@ -29,16 +33,15 @@ body {
 
 /* HEADER */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: auto 1fr;
   border-bottom: 1px solid #000;
   padding-bottom: 2mm;
   margin-bottom: 3mm;
 }
 
 .header img {
-  height: 28mm; /* menor e mais fiel */
+  height: 26mm;
 }
 
 .header-info {
@@ -46,8 +49,8 @@ body {
   font-weight: bold;
   text-align: right;
   line-height: 1.2;
+  align-self: end;
 }
-
 
 /* TITULO */
 .titulo {
@@ -70,7 +73,12 @@ body {
 td {
   border: 1px solid #000;
   padding: 0;
-  height: 6mm; /* mais compacto */
+  height: 6mm;
+}
+
+td input {
+  height: 100%;
+  line-height: 6mm;
 }
 
 .linha span {
@@ -273,12 +281,24 @@ function gerarPDF() {
   const data = new Date().toISOString().split("T")[0];
   const nome = `OS-${cliente}-${data}`.replace(/\s+/g, "-");
 
-  html2pdf().set({
+  const elemento = document.getElementById("nota");
+
+  html2pdf(elemento, {
     margin: 0,
     filename: nome + ".pdf",
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: "mm", format: "a5", orientation: "portrait" }
-  }).from(document.getElementById("nota")).save();
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: {
+      scale: 3,              // 🔥 mais definição
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: elemento.scrollWidth
+    },
+    jsPDF: {
+      unit: "mm",
+      format: [148, 210],    // 🔥 tamanho físico A5 real
+      orientation: "portrait"
+    }
+  });
 }
 </script>
 
