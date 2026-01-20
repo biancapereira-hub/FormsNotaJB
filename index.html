@@ -74,7 +74,23 @@ function gerarPDF() {
 
   let y = 20;
 
-  // ===== CABEÇALHO =====
+ <script>
+function adicionarLinha() {
+  const tbody = document.getElementById('itens');
+
+  const tr = document.createElement('tr');
+
+  tr.innerHTML = `
+    <td><input class="qtd"></td>
+    <td><input class="desc"></td>
+    <td><input class="preco"></td>
+  `;
+
+  tbody.appendChild(tr);
+}
+</script>
+
+ // ===== CABEÇALHO =====
   pdf.setFontSize(20);
   pdf.text('JONAS BIKES', 20, y);
 
@@ -117,7 +133,29 @@ function gerarPDF() {
 
   let totalGeral = 0;
 
-  // ===== LINHAS =====
+ <table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Qtd</th>
+      <th>Descrição</th>
+      <th>Preço</th>
+    </tr>
+  </thead>
+  <tbody id="itens">
+    <tr>
+      <td><input class="qtd"></td>
+      <td><input class="desc"></td>
+      <td><input class="preco"></td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<button type="button" onclick="adicionarLinha()">+ Linha</button>
+<br><br>
+<button onclick="gerarPDF()">Gerar PDF</button>
+
+ // ===== LINHAS =====
   linhas.forEach(linha => {
     const qtd = Number(linha.querySelector('.qtd').value || 0);
     const desc = linha.querySelector('.desc').value || '';
