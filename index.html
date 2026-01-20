@@ -8,18 +8,22 @@
 
 <style>
 @page {
-  size: A5;
-  margin: 8mm;
+  size: A4;
+  margin: 15mm;
 }
   
 body {
   background: #ccc;
   font-family: Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
 }
 
+
 #nota {
-  width: 132mm; /* MAIS ESTREITO QUE A5 */
+  width: 180mm;   /* seguro para A4 */
   min-height: auto;
+}
 
 
 /* ================= CABEÇALHO ================= */
@@ -67,14 +71,9 @@ input {
 .tabela {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #000;
-  font-size: 11px;
-  margin-top: 6mm;
   table-layout: fixed;
 }
-
-}
-
+  
 .tabela th {
   border: 1px solid #000;
   padding: 2mm;
